@@ -1,0 +1,25 @@
+const assert = require('node:assert/strict');
+const Guard = require('../frontend/posture-guard.js');
+
+const guard=new Guard();
+const step=(now,score,enabled=true,working=true)=>guard.step({now,score,enabled,working});
+assert.equal(step(1000,30,false).locked,false,'opt-in must be required');
+assert.equal(step(1000,null).locked,false,'no camera reading must fail open');
+assert.equal(step(1100,40).locked,false);
+assert.equal(step(6999,40).locked,false);
+assert.equal(step(7100,40).locked,true,'six seconds of sustained slouch lock');
+assert.equal(step(7600,72).locked,true,'a middling score should not unlock');
+assert.equal(step(8100,80).locked,true);
+assert.equal(step(10099,80).locked,true);
+assert.equal(step(10100,80).locked,false,'two seconds with a healthy score unlocks');
+step(11000,40);assert.equal(step(17000,40).locked,true);
+assert.equal(step(17500,null).locked,false,'tracking loss cannot trap user');
+step(18000,40);assert.equal(step(24000,40).locked,true);
+guard.bypass(24000);
+assert.equal(step(25000,40).locked,false);
+assert.equal(step(143999,40).locked,false);
+assert.equal(step(144000,40).locked,false,'after override, a new full delay is required');
+assert.equal(step(150000,40).locked,true);
+assert.equal(step(150250,40,true,false).locked,false,'paused sessions cannot lock');
+assert.equal(step(151000,40,false).locked,false,'turning feature off instantly releases');
+console.log('PASS: opt-in, dwell, hysteresis, recovery, missing camera, bypass, paused session');
