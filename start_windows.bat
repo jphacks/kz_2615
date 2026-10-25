@@ -1,5 +1,21 @@
 @echo off
 cd /d "%~dp0"
+echo.
+echo =======================================================
+echo    ErgoPulse - GitHub edition - 2026-10-25
+ echo    LIVE CAMERA + FASTER POSTURE CALIBRATION.
+echo =======================================================
+echo.
+rem Never silently open an old ErgoPulse running on port 8000.
+netstat -ano | findstr /C:":8000" | findstr /C:"LISTENING" >nul
+if not errorlevel 1 (
+  echo [ERROR] Port 8000 is already in use.
+  echo An older ErgoPulse may be running. Close its CMD window,
+  echo or terminate ONLY that server before trying again.
+  echo Do not delete any folders yet.
+  pause
+  exit /b 1
+)
 if exist .venv\Scripts\python.exe goto dependencies
 set "ERGO_PYTHON="
 where py >nul 2>&1

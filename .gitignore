@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Node / tooling
+node_modules/
+coverage/
+
+# Local secrets and user settings
+.env
+.env.*
+!.env.example
+*.local
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs, generated packages and temporary artifacts
+*.log
+*.tmp
+dist/
+build/
+*.egg-info/
+*.zip
+
+# Internal captures; hand-picked showcase images remain in docs/images
+playwright-report/
+test-results/
