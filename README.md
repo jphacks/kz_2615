@@ -60,26 +60,32 @@ flowchart LR
 
 ### 姿勢検知から通知までの流れ
 
+
+### 姿勢検知から通知までの流れ
+
 ```mermaid
-flowchart TB
-    A["アプリ起動"] --> B["カメラ開始・基準姿勢登録"]
-    B --> C["姿勢を継続計測"]
-    C --> D["姿勢スコアを算出"]
-    D --> E{"姿勢は良好？"}
-    E -->|はい| F["通常状態：ねこは小さい"]
-    E -->|いいえ| G["一定時間、悪い姿勢が続く"]
-    G --> H["ねこが徐々に大きくなる"]
-    H --> I{"姿勢を正した？"}
-    I -->|はい| J["ねこが元に戻る"]
-    I -->|いいえ| K["注意を強める・休憩を促す"]
-    F --> L(["姿勢の計測を続ける"])
-    J --> L
-    K --> L
-    classDef step fill:#f1f7f1,stroke:#315b45,color:#183a2a,stroke-width:1.5px;
-    classDef notice fill:#fff2e5,stroke:#df8a32,color:#59360f,stroke-width:2px;
-    class A,B,C,D,E,F,G,I,J,K,L step;
-    class H notice;
+flowchart LR
+    A["アプリ起動<br/>基準姿勢登録"] --> B["姿勢計測<br/>スコア算出"]
+    B --> C{"姿勢は良好？"}
+
+    C -->|はい| D["通常状態<br/>ねこは小さい"]
+    C -->|いいえ| E["悪い姿勢が<br/>一定時間続く"]
+
+    E --> F["ねこが徐々に<br/>大きくなる"]
+    F --> G{"姿勢を直した？"}
+
+    G -->|はい| H["ねこが元に戻る"]
+    G -->|いいえ| I["注意を強める<br/>休憩を促す"]
+
+    classDef normal fill:#f1f7f1,stroke:#315b45,color:#183a2a,stroke-width:1.5px;
+    classDef warning fill:#fff2e5,stroke:#df8a32,color:#59360f,stroke-width:2px;
+
+    class A,B,C,D,E,G,H,I normal;
+    class F warning;
 ```
+
+姿勢の計測と判定は継続して行われ、姿勢が改善されるとねこが元の大きさに戻ります。
+
 
 姿勢が良い間は通常表示のまま計測を続けます。姿勢が崩れた場合も、一定時間続くまでは通知せず、姿勢を正せばねこは元に戻ります。
 
