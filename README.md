@@ -63,26 +63,36 @@ flowchart LR
 
 ### 姿勢検知から通知までの流れ
 
+
+### 姿勢検知から通知までの流れ
+
 ```mermaid
-flowchart LR
-    A["アプリ起動<br/>基準姿勢登録"] --> B["姿勢計測<br/>スコア算出"]
-    B --> C{"姿勢は良好？"}
+flowchart TB
+    A["アプリ起動・基準姿勢登録"]
+    B["姿勢を計測・スコア算出"]
+    C{"姿勢は良好？"}
+    D["通常状態<br/>ねこは小さい"]
+    E["悪い姿勢が一定時間続くと<br/>ねこが徐々に大きくなる"]
+    F{"姿勢を正した？"}
+    G["ねこが元に戻る"]
+    H["注意を強める<br/>休憩を促す"]
 
-    C -->|はい| D["通常状態<br/>ねこは小さい"]
-    C -->|いいえ| E["悪い姿勢が<br/>一定時間続く"]
-
-    E --> F["ねこが徐々に<br/>大きくなる"]
-    F --> G{"姿勢を直した？"}
-
-    G -->|はい| H["ねこが元に戻る"]
-    G -->|いいえ| I["注意を強める<br/>休憩を促す"]
+    A --> B --> C
+    C -->|はい| D
+    C -->|いいえ| E
+    E --> F
+    F -->|はい| G
+    F -->|いいえ| H
 
     classDef normal fill:#f1f7f1,stroke:#315b45,color:#183a2a,stroke-width:1.5px;
     classDef warning fill:#fff2e5,stroke:#df8a32,color:#59360f,stroke-width:2px;
 
-    class A,B,C,D,E,G,H,I normal;
-    class F warning;
+    class A,B,C,D,F,G,H normal;
+    class E warning;
 ```
+
+姿勢の計測は継続して行い、姿勢が改善されるとねこが元の大きさに戻ります。
+
 
 姿勢の計測と判定は継続して行われ、姿勢が改善されるとねこが元の大きさに戻ります。
 
